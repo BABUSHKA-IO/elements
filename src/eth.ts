@@ -3,8 +3,13 @@ declare var window: any;
 
 export const getWeb3 = async () => {
   if (window.ethereum) {
-    await window.ethereum.request({ method: "eth_requestAccounts" });
-    return new Web3(window.ethereum);
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      return new Web3(window.ethereum);
+    } catch (e) {
+      /* handle error */
+      console.error("eth::getWeb3", e);
+    }
   }
   return false;
 };
