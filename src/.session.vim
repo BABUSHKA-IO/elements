@@ -10,16 +10,19 @@ endif
 set shortmess=aoO
 argglobal
 %argdel
-edit ~/program/react/elements/elements-vite/src/App.tsx
+edit App.tsx
 argglobal
-let s:l = 4 - ((3 * winheight(0) + 22) / 45)
+balt eth.ts
+let s:l = 13 - ((12 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
+keepjumps 13
 normal! 0
 tabnext 1
-badd +0 ~/program/react/elements/elements-vite/src/App.tsx
+badd +3 App.tsx
+badd +7 pages/Login.tsx
+badd +13 eth.ts
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
