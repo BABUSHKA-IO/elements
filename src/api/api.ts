@@ -1,7 +1,7 @@
 import { getRequest, postRequest } from "./request";
 
-const url = "https://raptor-trading.herokuapp.com/";
-// const url = 'http://localhost:8080/';
+// const url = "https://raptor-trading.herokuapp.com/";
+const url = "http://localhost:8080/";
 
 export interface API_Response {
   status: boolean;
@@ -26,9 +26,5 @@ export async function getUser(address: string) {
   const response: API_Response | null = await getRequest(url + "user", {
     address: address,
   });
-  if (response && response.status) {
-    return response.data;
-  }
-
-  return null;
+  return response;
 }
