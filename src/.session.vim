@@ -10,19 +10,28 @@ endif
 set shortmess=aoO
 argglobal
 %argdel
-edit App.tsx
+edit pages/Events.tsx
 argglobal
 balt eth.ts
-let s:l = 13 - ((12 * winheight(0) + 22) / 45)
+let s:l = 61 - ((14 * winheight(0) + 22) / 45)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 13
-normal! 0
+keepjumps 61
+normal! 05|
 tabnext 1
-badd +3 App.tsx
+badd +17 App.tsx
+badd +4 pages/Dashboard.tsx
+badd +17 eth.ts
 badd +7 pages/Login.tsx
-badd +13 eth.ts
+badd +14 pages/Register.tsx
+badd +44 api/api.ts
+badd +1 api/request.ts
+badd +1 components/CharityList.tsx
+badd +1 api/CharityContractABI.ts
+badd +19 pages/Home.tsx
+badd +61 pages/Events.tsx
+badd +14 pages/CreateEvent.tsx
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif

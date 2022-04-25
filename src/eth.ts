@@ -13,3 +13,7 @@ export const getWeb3 = async () => {
   }
   return false;
 };
+
+export const weiToEth = (value: string) => {
+  return Web3.utils.fromWei(value);
+};
