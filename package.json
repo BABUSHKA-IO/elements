@@ -19,7 +19,7 @@
     "stream-browserify": "^3.0.0",
     "util": "^0.12.4",
     "web3": "^1.7.0",
-    "zustand": "^3.7.0"
+    "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",
