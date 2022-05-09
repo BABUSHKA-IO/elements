@@ -28,19 +28,6 @@ const CharityContractABI: any = [
     inputs: [
       {
         internalType: "uint256",
-        name: "eventId",
-        type: "uint256",
-      },
-    ],
-    name: "fundEvent",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
         name: "",
         type: "uint256",
       },
@@ -77,8 +64,26 @@ const CharityContractABI: any = [
         name: "owner",
         type: "address",
       },
+      {
+        internalType: "bool",
+        name: "isVerified",
+        type: "bool",
+      },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "eventId",
+        type: "uint256",
+      },
+    ],
+    name: "fundEvent",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -117,6 +122,11 @@ const CharityContractABI: any = [
             name: "owner",
             type: "address",
           },
+          {
+            internalType: "bool",
+            name: "isVerified",
+            type: "bool",
+          },
         ],
         internalType: "struct CharityEvent[]",
         name: "",
@@ -126,12 +136,25 @@ const CharityContractABI: any = [
     stateMutability: "view",
     type: "function",
   },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "eventId",
+        type: "uint256",
+      },
+    ],
+    name: "verifyEvent",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ];
 
 export function getCharityContract(web3: Web3) {
   const contract = new web3.eth.Contract(
     CharityContractABI,
-    "0x38e4349934b59CD48F7A1917a93d8F84d1feFAe4"
+    "0x840f31C7ff44110d1Cc573CCd9efFA7edF4Ca842"
   );
   return contract;
 }

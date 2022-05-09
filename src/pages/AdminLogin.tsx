@@ -1,18 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api_addCharityEvent } from "../api/api";
+import { useStore } from "../store";
 import Header from "../components/Header";
 
-const CreateEvent = () => {
-  const [name, setName] = useState("");
-  const [desc, setDesc] = useState("");
-  const [imageUri, setImageUri] = useState("");
+const AdminLogin = () => {
+  const [adminPass, setAdminPass] = useState("");
+  const admin = useStore((state) => state.isAdmin);
+  const setAdmin = useStore((state) => state.setAdmin);
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    await api_addCharityEvent(name, desc, imageUri);
-    navigate("/events");
+    if (adminPass == "12345678") {
+      setAdmin(true);
+      navigate("/verify");
+    }
   };
+
+  useEffect(() => {
+    if (admin) {
+      navigate("/verify");
+    }
+  }, [admin]);
 
   return (
     <div
@@ -29,7 +37,7 @@ const CreateEvent = () => {
       <div
         style={{
           width: "513px",
-          height: "560px",
+          height: "393px",
           margin: "auto",
           background: "#FFFFFF",
           boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -50,11 +58,12 @@ const CreateEvent = () => {
             textAlign: "left",
           }}
         >
-          Create an Event
+          Admin Login
         </div>
 
         <input
-          placeholder="Event Name"
+          type="password"
+          placeholder="Password"
           style={{
             background: "#FFFFFF",
             border: "2px solid #6FB6B4",
@@ -62,34 +71,8 @@ const CreateEvent = () => {
             padding: 24,
             marginTop: 42,
           }}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <input
-          placeholder="Event Description"
-          style={{
-            background: "#FFFFFF",
-            border: "2px solid #6FB6B4",
-            borderRadius: "15px",
-            padding: 24,
-            marginTop: 42,
-          }}
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
-        />
-
-        <input
-          placeholder="Image Url"
-          style={{
-            background: "#FFFFFF",
-            border: "2px solid #6FB6B4",
-            borderRadius: "15px",
-            padding: 24,
-            marginTop: 42,
-          }}
-          value={imageUri}
-          onChange={(e) => setImageUri(e.target.value)}
+          value={adminPass}
+          onChange={(e) => setAdminPass(e.target.value)}
         />
 
         <button
@@ -97,11 +80,11 @@ const CreateEvent = () => {
           style={{ marginTop: 42, padding: 20 }}
           onClick={handleSubmit}
         >
-          Create
+          Login
         </button>
       </div>
     </div>
   );
 };
 
-export default CreateEvent;
+export default AdminLogin;

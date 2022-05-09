@@ -6,6 +6,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Events from "./pages/Events";
 import CreateEvent from "./pages/CreateEvent";
+import AdminLogin from "./pages/AdminLogin";
+import VeifyPage from "./pages/VeifyPage";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="adminlogin" element={<AdminLogin />} />
+          <Route path="verify" element={<VeifyPage />} />
         </Routes>
       </BrowserRouter>
     </div>

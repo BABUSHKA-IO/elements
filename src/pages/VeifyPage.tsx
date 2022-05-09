@@ -1,14 +1,15 @@
-import { Button, Modal, Paper, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { api_listCharityEvents, api_sendDonation } from "../api/api";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { api_listCharityEvents, api_verify } from "../api/api";
 import Header from "../components/Header";
-import { weiToEth } from "../eth";
+import { useStore } from "../store";
 
-const EventItem = ({ event }: { event: any }) => {
-  const [showPopup, setShowPopup] = useState(false);
-  const closeModal = () => {
-    setShowPopup(false);
+const EventItem = ({ event, loadEvents }: { event: any; loadEvents: any }) => {
+  const handleVerify = async () => {
+    await api_verify(event.id);
+    loadEvents();
   };
+
   return (
     <div
       style={{
@@ -75,20 +76,7 @@ const EventItem = ({ event }: { event: any }) => {
           alignItems: "center",
         }}
       >
-        <div
-          style={{
-            fontFamily: "'Montserrat'",
-            fontStyle: "italic",
-            fontWeight: "500",
-            fontSize: "16px",
-            lineHeight: "20px",
-            color: "#679E3C",
-          }}
-        >
-          $ {weiToEth(event.money)}
-        </div>
         <button
-          onClick={() => setShowPopup(true)}
           className="buttonBase"
           style={{
             fontFamily: "'Montserrat'",
@@ -99,70 +87,35 @@ const EventItem = ({ event }: { event: any }) => {
             color: "#FFFFFF",
             padding: 14,
           }}
+          onClick={handleVerify}
         >
-          Fund It
+          Approve
         </button>
       </div>
-
-      <Paymentpopup
-        eventId={event.id}
-        show={showPopup}
-        closeModal={closeModal}
-      />
     </div>
   );
 };
 
-const Paymentpopup = ({
-  eventId,
-  show,
-  closeModal,
-}: {
-  eventId: number;
-  show: boolean;
-  closeModal: any;
-}) => {
-  const [amount, setAmount] = useState("");
-
-  const handleDonation = async () => {
-    await api_sendDonation(eventId, amount);
-    closeModal();
-    window.location.reload();
-  };
-
-  return (
-    <Modal open={show} onClose={closeModal}>
-      <Paper sx={{ width: 800, margin: "auto", marginTop: "20%", padding: 4 }}>
-        <Typography variant="h4" textAlign="center">
-          Donate
-        </Typography>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <br />
-          <TextField
-            variant="outlined"
-            placeholder="Ammount"
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-          <br />
-          <Button variant="contained" onClick={handleDonation}>
-            Donate
-          </Button>
-        </div>
-      </Paper>
-    </Modal>
-  );
-};
-
-const Events = () => {
+const VeifyPage = () => {
   const [events, setEvents] = useState<any[]>([]);
+  const admin = useStore((state) => state.isAdmin);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    api_listCharityEvents().then((result) =>
-      setEvents(result.filter((item: any) => item.isVerified))
-    );
+    loadEvents();
   }, []);
+
+  const loadEvents = () => {
+    api_listCharityEvents().then((result) =>
+      setEvents(result.filter((item: any) => !item.isVerified))
+    );
+  };
+
+  useEffect(() => {
+    if (!admin) {
+      navigate("/adminlogin");
+    }
+  }, [admin]);
 
   return (
     <div
@@ -196,9 +149,10 @@ const Events = () => {
             marginBottom: 36,
           }}
         />
+
         <div style={{ display: "grid", gridTemplateColumns: "auto auto auto" }}>
           {events.map((item) => (
-            <EventItem key={item.id} event={item} />
+            <EventItem key={item.id} event={item} loadEvents={loadEvents} />
           ))}
         </div>
       </div>
@@ -206,4 +160,4 @@ const Events = () => {
   );
 };
 
-export default Events;
+export default VeifyPage;

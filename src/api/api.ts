@@ -51,3 +51,17 @@ export async function api_sendDonation(eventId: number, amount: string) {
     console.error("api::", e);
   }
 }
+
+export async function api_verify(eventId: number) {
+  try {
+    const web3 = await getWeb3();
+    if (web3) {
+      const contract = getCharityContract(web3);
+      const accounts = await web3.eth.getAccounts();
+      await contract.methods.verifyEvent(eventId).send({ from: accounts[0] });
+    }
+  } catch (e) {
+    /* handle error */
+    console.error("api::", e);
+  }
+}
